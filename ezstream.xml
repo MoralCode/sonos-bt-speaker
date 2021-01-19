@@ -1,0 +1,11 @@
+<ezstream>
+    <url>http://localhost:8000/stream</url>
+    <sourcepassword>hackme</sourcepassword>
+    <filename>stdin</filename>
+    <stream_once>1</stream_once>
+    <format>MP3</format>
+    <svrinfobitrate>320</svrinfobitrate>
+    <svrinfochannels>2</svrinfochannels>
+    <svrinfosamplerate>44100</svrinfosamplerate>
+    <svrinfopublic>0</svrinfopublic>
+</ezstream>
