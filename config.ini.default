@@ -1,5 +1,5 @@
 [bt_speaker]
-play_command = aplay -f cd -
+play_command = lame -r -s 44.1 -B 320 - - | ezstream -c /etc/bt_speaker/ezstream.xml
 connect_command = /etc/bt_speaker/hooks/connect
 disconnect_command = /etc/bt_speaker/hooks/disconnect
 startup_command = /etc/bt_speaker/hooks/startup
