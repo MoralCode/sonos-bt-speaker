@@ -1,8 +1,8 @@
-# BT-Speaker
+# Sonos-BT-Speaker
 
-A simple Bluetooth Speaker Daemon designed for the Raspberry Pi 3.
+A simple Bluetooth Speaker Daemon to turn a sonos device into a bluetooth speaker. Designed for the Raspberry Pi 3 and based on [lukasjapan's bt-speaker repository](https://github.com/lukasjapan/bt-speaker) (with some other stuff added).
 
-BT-Speaker aims to _just work_ on a vanilla installation using pure ALSA.
+Sonos-BT-Speaker aims to _just work_ on a vanilla installation using pure ALSA.
 
 ## Installation
 
@@ -39,11 +39,17 @@ You are advised to change the hostname according to your needs.
 
 ## Config
 
-The default settings of BT-Speaker will be copied and can be overridden in `/etc/bt_speaker/config.ini`.
+sonos-bt-speaker is structured somewhat like this:
+
+![an approximate block diagram representing the structure of sonos-bt-speaker](docs/dataflow.png)
+
+Because [streaming is not designed with low latency in mind](https://stackoverflow.com/a/17151097) and the many services in between the audio source and its destination, there is a significant amount of latency between playing a song and hearing it through sonos. This is definitely not suitable for any applications requiring audio to be synced with anything (i.e. video playback). It would be nice if this could allow a sonos device to be used as a computer speaker, however, this would require sonos to support another (non streaming) method of audio input. Currently a controller application (such as soco-cli or the official sonos app) instructs the sonos to go out and fetch a stream from some source ([API Docs](https://developer.sonos.com/build/content-service-get-started/architecture/)). 
+
+The default settings will be copied and can be overridden in `/etc/bt_speaker/config.ini`.
 
 | Section    | Key                | Default Value                    | Description                                                                                                                                                |
 | ---------- | ------------------ | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| bt_speaker | play_command       | aplay -f cd -                    | The raw audio in CD Format (16bit little endian, 44100Hz, stereo) is piped to this command.                                                                |
+| bt_speaker | play_command       | `lame -r -s 44.1 -B 320 - - | ezstream -c /etc/bt_speaker/ezstream.xml`                    | The raw audio in CD Format (16bit little endian, 44100Hz, stereo) is piped to this command.                                                                |
 | bt_speaker | connect_command    | /etc/bt_speaker/hooks/connect    | Command that is called when an audio device connects to BT-Speaker                                                                                         |
 | bt_speaker | disconnect_command | /etc/bt_speaker/hooks/disconnect | Command that is called when an audio device disconnects from BT-Speaker                                                                                    |
 | bluez      | device_path        | /org/bluez/hci0                  | The DBUS path where BT-Speaker can find the bluetooth device                                                                                               |
